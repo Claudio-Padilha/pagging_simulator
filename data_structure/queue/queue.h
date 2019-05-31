@@ -3,11 +3,12 @@
 
 #include <pthread.h>
 #include <stdlib.h>
+#include "../process/process.h"
 
 // Node struct for queue.
 typedef struct node
 {
-    int pid;
+    process * p;
     
     struct node * next;                                             // Next on queue.
 }node;
