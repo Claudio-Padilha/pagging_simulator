@@ -12,7 +12,7 @@ typedef struct node
     struct node * next;
 }node;
 
-// Structure representing disc
+// Structure representing disc (contains only pages).
 typedef struct disc
 {
     node * storage;                                              // List of pages on disc. Points to the first element and each element points to next.                                                                
