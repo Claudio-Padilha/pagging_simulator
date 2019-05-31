@@ -2,7 +2,7 @@
 
 int cpu (process * p, int tq)
 {
-        int ret = tq;                           // Assumes tq < process burst
+        int ret = tq;                           // Assumes tq <= process burst
 
         if (p->burst > tq)
         {

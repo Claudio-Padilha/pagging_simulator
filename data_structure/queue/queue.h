@@ -24,4 +24,7 @@ typedef struct queue
 
 // Creates new queue structure
 queue * newQueue();
+
+// Creates new node
+node * newNode (process * p);
 #endif
