@@ -33,6 +33,8 @@ void * shipper (void * param)
         timerArgs * tmArgs = newTimerArgs (sh->t, sh->p, usage);
         pthread_t tm;
 
-        // TODO: Calls timer
+        pthread_create (&tm, NULL, timer, (void *) tmArgs);
     }
+
+    return NULL;
 }

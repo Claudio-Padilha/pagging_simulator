@@ -65,18 +65,36 @@ void * roundRobin (void * param)
                 continue;
             }else                                                           // Queue is not empty.
             {
-                process * p = removeFromQueue (sch->ready);                 // Tries to get process with burst
+                process * p = removeFromQueue (sch->ready);                 // Tries to get process with burst.
 
-                while (p != NULL && p->burst == 0)                          // while processes have burst equal zero, erase it and update structures
+                while (p != NULL && p->burst == 0)                          // while processes have burst equal zero, erase it and update structures.
                 {
                     pthread_mutex_lock(&sch->m->lock);
 
-                    for (int i = 0; i<p->numPgs; i++)                       // Go through process' page
+                    for (int i = 0; i<p->numPgs; i++)                       // Go through process' page.
                     {
-                        if (p->pgTb[i]->valid == 1)                         // Process page is in memory
+                        node * aux;
+                        node * prev;
+                        if (p->pgTb[i]->valid == 1)                         // Process page is in memory.
                         {
-                            sch->m->fr->ff[p->pgTb[i]->idf] = 1;            // Marks frame idf as free
+                            sch->m->fr->ff[p->pgTb[i]->idf] = 1;            // Marks frame idf as free.
                             sch->m->used --;
+
+                            aux = sch->m->fr->first;
+                            while (aux != NULL && aux->p->idf != p->pgTb[i]->idf)           //Looks for process on free frame structure queue and removes it.
+                            {
+                                prev = aux;
+                                aux = aux->next;
+                            }
+
+                            prev->next = aux->next;
+
+                            if (aux->next == NULL)                                                  // It was the last on queue
+                            {
+                                sch->m->fr->last = prev;
+                            }
+
+                            sch->m->fr->qSize --;
                         }
                     }
 
@@ -87,19 +105,19 @@ void * roundRobin (void * param)
                     p = removeFromQueue (sch->ready);                       // Looks for a process with burst time and remove if the porcess has burst equal 0
                 }
 
-                if (p == NULL)                                              // No process with burst time;
+                if (p == NULL)                                              // No process with burst time.
                 {
                     pthread_mutex_unlock(&sch->ready->lock);
                     continue;
                 }
 
-                insertIntoQueue(p, sch->ready);                             // Put process back into ready queue
+                insertIntoQueue(p, sch->ready);                             // Put process back into ready queue.
                 pthread_mutex_unlock(&sch->ready->lock);
 
                 pthread_t sh;
                 shArgs * shAr = newShArgs(p, sch->d, sch->m, sch->t, sch->seed, sch->t->tq);
 
-                pthread_create (&sh, NULL, shipper, (void *) shAr);                                             // Sends process to shipper
+                pthread_create (&sh, NULL, shipper, (void *) shAr);                                             // Sends process to shipper.
 
                 break;
             }
