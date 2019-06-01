@@ -10,12 +10,19 @@
 typedef struct schArgs
 {
     timerS * t;
-    queue * ready;                                                          // Ready queue that contains processes.
+    queue * ready;                                                          // Ready queue
+    memory * m;
+    disc * d;
+
+    int seed;
 }schArgs;
 
 // Creates new scArgs.
-schArgs * newSchArgs (timerS * t, queue * ready);
+schArgs * newSchArgs (timerS * t, queue * ready, memory * m, disc * d, int seed);
 
 // Round Robin scheduler
 void * roundRobin (void * param);
+
+// Inserts a process back into ready queue
+int insertIntoQueue (process * p, queue * ready);
 #endif

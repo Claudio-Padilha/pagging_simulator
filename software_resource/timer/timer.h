@@ -28,6 +28,9 @@ typedef struct timerArgs
 // Creates a new timer
 timerS * newTimer (int tq, int totalProc);
 
+// Creates new timer args.
+timerArgs * newTimerArgs (timerS * t, process * p, int usage);
+
 // New timer thread.
 void * timer (void * param);
 #endif

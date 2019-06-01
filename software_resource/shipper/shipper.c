@@ -20,7 +20,7 @@ void * shipper (void * param)
     srand(sh->seed);                                            
     int pgIndex = rand() % sh->p->numPgs;                                           // Gets the page index for this process.
 
-    if (sh->p->pgTb[pgIndex]->valid == true)
+    if (sh->p->pgTb[pgIndex]->valid == true)                                        // There is no page fault
     {
         sh->p->pgTb[pgIndex]->ref == true;                                          // Adjusts reference bit.
 
@@ -30,6 +30,9 @@ void * shipper (void * param)
 
         pthread_mutex_unlock(&sh->p->lock);
 
-        // TODO: create timer thread
+        timerArgs * tmArgs = newTimerArgs (sh->t, sh->p, usage);
+        pthread_t tm;
+
+        // TODO: Calls timer
     }
 }

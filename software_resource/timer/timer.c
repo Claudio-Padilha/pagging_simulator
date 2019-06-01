@@ -13,6 +13,16 @@ timerS * newTimer (int tq, int totalProc)
     return ret;
 }
 
+timerArgs * newTimerArgs (timerS * t, process * p, int usage)
+{
+    timerArgs * ret = malloc(sizeof(timerArgs));
+    ret->t = t;
+    ret->p = p;
+    ret->usage = usage;
+
+    return ret;
+}
+
 void * timer (void * param)
 {
     timerArgs * tm = (timerArgs *) param;
