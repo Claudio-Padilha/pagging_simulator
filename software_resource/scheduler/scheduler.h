@@ -4,6 +4,7 @@
 #include <pthread.h>
 #include "../../data_structure/queue/queue.h"
 #include "../timer/timer.h"
+#include "../shipper/shipper.h"
 
 // Structure used to pass arguments to scheduler.
 typedef struct schArgs

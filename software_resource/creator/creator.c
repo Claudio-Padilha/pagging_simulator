@@ -27,9 +27,11 @@ void * creator (void * param)
 
     sleep(cr->p->creation);                                             // Wait for thr moment to create process
 
-    pthread_mutex_lock(&cr->ready->lock);                               // Aquires ready queue lock
-    
+    pthread_mutex_lock(&cr->ready->lock);                               // Aquires ready queue and process locks
+    pthread_mutex_lock(&cr->p->lock);
+
     insertIntoQueue (cr->p, cr->ready);                                 // Insert process into ready queue.
 
-    pthread_mutex_unlock(&cr->ready->lock);                             // Releases ready queue lock
+    pthread_mutex_lock(&cr->p->lock);                                   
+    pthread_mutex_unlock(&cr->ready->lock);                             // Releases ready queue and process locks
 }

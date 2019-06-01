@@ -52,4 +52,6 @@ void * roundRobin (void * param)
         pthread_cond_wait (&sch->t->tqCond, &sch->t->lock);                 // Waits for timer to signal tq condition.
         pthread_mutex_unlock(&sch->t->lock);
     }
+
+    return NULL;
 }
