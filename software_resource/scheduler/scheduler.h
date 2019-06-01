@@ -9,12 +9,12 @@
 // Structure used to pass arguments to scheduler.
 typedef struct schArgs
 {
-    timer * t;
+    timerS * t;
     queue * ready;                                                          // Ready queue that contains processes.
 }schArgs;
 
 // Creates new scArgs.
-schArgs * newSchArgs (timer * t, queue * ready);
+schArgs * newSchArgs (timerS * t, queue * ready);
 
 // Round Robin scheduler
 void * roundRobin (void * param);

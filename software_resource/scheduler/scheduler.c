@@ -1,6 +1,6 @@
 #include "scheduler.h"
 
-schArgs * newSchArgs (timer * t, queue * ready)
+schArgs * newSchArgs (timerS * t, queue * ready)
 {
     schArgs * ret = malloc(sizeof(schArgs));
     ret->t = t;
@@ -11,6 +11,10 @@ schArgs * newSchArgs (timer * t, queue * ready)
 
 process * removeFromQueue (queue * ready)
 {
+    if (ready->first == NULL)
+    {
+        return NULL;
+    }
     process * ret = ready->first->p;
     
     if (ready->first == ready->last)                                   // Only one process on queue
@@ -40,6 +44,16 @@ void * roundRobin (void * param)
             }else                                                           // Queue is not empty.
             {
                 process * p = removeFromQueue (sch->ready);
+                while (p != NULL && p->burst == 0)                  
+                {
+                    p = removeFromQueue (sch->ready);                       // Looks for a process with burst time
+                }
+
+                if (p == NULL)                                              // No process with burst time;
+                {
+                    pthread_mutex_unlock(&sch->ready->lock);
+                    continue;
+                }
                 pthread_mutex_unlock(&sch->ready->lock);
 
                 // TODO: shipper thread
