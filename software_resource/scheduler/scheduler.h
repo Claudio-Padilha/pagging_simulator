@@ -1,5 +1,5 @@
 #ifndef SCHEDULER
-#define SCEHDULER
+#define SCHEDULER
 
 #include <pthread.h>
 #include "../../data_structure/queue/queue.h"
