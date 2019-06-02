@@ -7,4 +7,6 @@ memory * newMemmory (int size)
     ret->used = 0;
     ret->fr = newFrame(size);
     ret->lock = (pthread_mutex_t) PTHREAD_MUTEX_INITIALIZER;
+
+    return ret;
 }

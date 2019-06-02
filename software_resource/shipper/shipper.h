@@ -8,6 +8,7 @@
 #include "../../hardware/cpu/cpu.h"
 #include "../timer/timer.h"
 #include "../../hardware/memory/memory.h"
+#include "../pager/pager.h"
 
 typedef struct shArgs
 {

@@ -6,6 +6,8 @@ queue * newQueue()
     ret->first = NULL;
     ret->last = NULL;
     ret->lock = (pthread_mutex_t) PTHREAD_MUTEX_INITIALIZER;
+
+    return ret;
 }
 
 node * newNode (process * p)

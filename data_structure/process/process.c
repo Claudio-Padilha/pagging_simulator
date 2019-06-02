@@ -1,4 +1,4 @@
-#include <process.h>
+#include "process.h"
 
 process * newProcess(int pid, int numPgs, int creation, int burst, disc * d)
 {
@@ -17,4 +17,5 @@ process * newProcess(int pid, int numPgs, int creation, int burst, disc * d)
         pthread_mutex_unlock(&d->lock);                                                   
     }                                                                               
 
+    return ret;
 }
