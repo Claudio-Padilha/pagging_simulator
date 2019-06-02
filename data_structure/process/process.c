@@ -7,8 +7,13 @@ process * newProcess(int pid, int numPgs, int creation, int burst, disc * d)
     ret->numPgs = numPgs;
     ret->creation = creation;
     ret->burst = burst;
-    ret->pgTb = malloc(sizeof(page *)*numPgs);
     ret->lock = (pthread_mutex_t) PTHREAD_MUTEX_INITIALIZER;
+    ret->pgTb = (page **) malloc(sizeof(page *)*numPgs);
+
+    for (int i = 0; i<numPgs; i++)
+    {
+        ret->pgTb[i] = (page *) malloc(sizeof(page));
+    }
 
     for (int i = 0; i < numPgs; i++)                                                // Creates page table.
     {

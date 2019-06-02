@@ -4,6 +4,8 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
+#include <stdio.h>
 #include "../../data_structure/process/process.h"
 
 typedef struct timerS

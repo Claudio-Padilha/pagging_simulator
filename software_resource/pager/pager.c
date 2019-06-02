@@ -32,7 +32,7 @@ int insertPage (page * p, memory * m)
     if (m->fr->qSize < m->fr->ffSize)                                           // Queue is not full.
     {
 
-        node * n = malloc(sizeof(node));
+        nodeFr * n = malloc(sizeof(nodeFr));
         n->next = NULL;
         n->p = p;
 
@@ -100,4 +100,6 @@ void * pager (void * param)
     pthread_mutex_unlock(&pgr->m->lock);
     pthread_mutex_unlock(&pgr->d->lock);
     pthread_mutex_unlock(&pgr->p->lock);
+
+    return NULL;
 }

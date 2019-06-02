@@ -2,7 +2,7 @@
 
 freeFrame * newFrame (int size) 
 {
-    freeFrame * ret = (freeFrame *) malloc (sizeof(freeFrame));
+    freeFrame * ret = malloc (sizeof(freeFrame));
     ret->ff = malloc (sizeof(int) * size);
     ret->first = NULL;
     ret->last = NULL;

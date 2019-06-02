@@ -2,6 +2,7 @@
 #define SHIPPER
 
 #include <time.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
 #include "../../data_structure/process/process.h"

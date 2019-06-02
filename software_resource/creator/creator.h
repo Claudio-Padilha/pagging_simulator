@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <time.h>
+#include <unistd.h>
+#include <stdio.h>
 #include "../../data_structure/process/process.h"
 #include "../../data_structure/queue/queue.h"
 

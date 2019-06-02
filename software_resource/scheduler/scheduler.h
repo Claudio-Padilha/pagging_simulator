@@ -2,6 +2,7 @@
 #define SCHEDULER
 
 #include <pthread.h>
+#include <stdio.h>
 #include "../../data_structure/queue/queue.h"
 #include "../timer/timer.h"
 #include "../shipper/shipper.h"

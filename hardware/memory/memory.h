@@ -10,6 +10,7 @@ typedef struct memory
 {
     int size;
     int used;
+    int pgFaults;
 
     freeFrame * fr;                                                 // Free frame control structure.
     pthread_mutex_t lock;                                           // Memory lock.

@@ -2,7 +2,7 @@
 
 timerS * newTimer (int tq, int totalProc)
 {
-    timerS * ret = malloc(sizeof(timer));
+    timerS * ret = malloc(sizeof(timerS));
     ret->tq = tq;
     ret->totalProc = totalProc;
     ret->doneProc = 0;
@@ -36,8 +36,17 @@ void * timer (void * param)
 
     pthread_cond_broadcast(&tm->t->tqCond);                                                 // Signals to Round Robin
 
+        struct tm * currentTime;
+        time_t segundos;
+        time(&segundos);   
+        currentTime = localtime(&segundos);
+        printf("Time: %d:%d:%d - Timer informa  ao Escalonador  Round-Robin  de  CPU que  o  processo %d atualmente  em  execucao precisa ser retirado da CPU.\n"
+        , currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, tm->p->id);
+ 
     if (tm->t->doneProc == tm->t->totalProc)                                                // All processes ended
     {
         pthread_cond_broadcast(&tm->t->endCond);
     }
+
+    return NULL;
 }
