@@ -6,7 +6,7 @@
 #include <time.h>
 #include "../../data_structure/process/process.h"
 
-typedef struct timer
+typedef struct timerS
 {
     int tq;                                                 // Time quantum parameter.
     int totalProc;                                          // Total number of processes.

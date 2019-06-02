@@ -6,11 +6,11 @@
 #include "../page/page.h"
 
 // Node structure used to control page queue for second chance algorithm.
-typedef struct node
+typedef struct nodeFr
 {
     page * p;
-    struct node * next;
-}node;
+    struct nodeFr * next;
+}nodeFr;
 
 // Structure that has the map of frame ocuppation in memory.
 typedef struct freeFrame
@@ -19,8 +19,8 @@ typedef struct freeFrame
     int * ff;                                      // ff is a vector of free frames. If ff[i] equals 1 frame i is free, else if ff[i] equals 0 it's not.
 
     // Queue used to control frames in memory.
-    node * first;
-    node * last; 
+    nodeFr * first;
+    nodeFr * last; 
     int qSize;                                               // Queue current size.                                                                
 }freeFrame; 
     
