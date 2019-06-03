@@ -26,6 +26,8 @@ process * removeFromQueue (queue * ready)
     }
     node * aux = ready->first;
     ready->first = ready->first->next;
+
+    
     free(aux);
 
     return ret;
@@ -46,7 +48,6 @@ int insertIntoQueue (process * p, queue * ready)
     }
 
     ready->last = n;
-
     return p->id;
 }
 
@@ -71,23 +72,34 @@ void * roundRobin (void * param)
                 {
                     pthread_mutex_lock(&sch->m->lock);
 
-                    for (int i = 0; i<p->numPgs; i++)                       // Go through process' page.
+                    for (int i = 0; i < p->numPgs; i++)                       // Go through process' page.
                     {
                         nodeFr * aux = (nodeFr *) NULL;
                         nodeFr * prev  = (nodeFr *) NULL;
-                        if (p->pgTb[i]->valid == 1)                         // Process page is in memory.
+                        if (p->pgTb[i]->valid == true)                         // Process page is in memory.
                         {
                             sch->m->fr->ff[p->pgTb[i]->idf] = 1;            // Marks frame idf as free.
-                            sch->m->used --;
+                            p->pgTb[i]->valid = false;
+                            p->pgTb[i]->ref = false;
 
                             aux = sch->m->fr->first;
+                            prev = NULL;
                             while (aux != NULL && aux->p->idf != p->pgTb[i]->idf)           //Looks for page on free frame structure queue and removes it.
                             {
                                 prev = aux;
                                 aux = aux->next;
                             }
 
-                            prev->next = aux->next;
+                            if (prev != NULL)
+                            {
+                                prev->next = aux->next;
+                            }else
+                            {
+                                sch->m->fr->first = NULL;                                           //only element on queue
+                                sch->m->fr->last = NULL;
+                            }
+                            
+                            aux->p->idf = -1;
 
                             if (aux->next == NULL)                                                  // It was the last on queue
                             {
@@ -112,7 +124,8 @@ void * roundRobin (void * param)
                     continue;
                 }
 
-                insertIntoQueue(p, sch->ready);                             // Put process back into ready queue.
+                insertIntoQueue(p, sch->ready);
+
                 pthread_mutex_unlock(&sch->ready->lock);
 
                 pthread_t sh;
@@ -125,8 +138,8 @@ void * roundRobin (void * param)
                 printf("Time: %d:%d:%d - Escalonador Round-Robin de CPU escolheu o processo %d, retirou-o da fila de prontos e o encaminhou ao Despachante.\n"
                 , currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, p->id);
 
-                 pthread_create (&sh, NULL, shipper, (void *) shAr);                                             // Sends process to shipper.
-
+                pthread_create (&sh, NULL, shipper, (void *) shAr);                                             // Sends process to shipper.
+                
                 break;
             }
         }

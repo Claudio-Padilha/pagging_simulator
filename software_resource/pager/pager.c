@@ -23,8 +23,11 @@ int hasFreeFrame (memory * m)
     return -1;
 }
 
-int insertPage (page * p, memory * m)
+int insertPage (page * p, memory * m, int id, int pid)
 {
+
+    struct tm * currentTime;
+    time_t segundos;
 
     p->valid = true;                                                            // Page table adjustment (new page).
     p->ref = true;
@@ -36,6 +39,8 @@ int insertPage (page * p, memory * m)
         n->next = NULL;
         n->p = p;
 
+        int fr = hasFreeFrame(m);
+
         if (m->fr->first == NULL)                                           // Queue is empty.
         {
             m->fr->first = n;
@@ -44,8 +49,15 @@ int insertPage (page * p, memory * m)
         {
             m->fr->last->next = n;
         }
+        p->idf = fr;
+        m->fr->ff[fr] = 0;
         m->fr->last = n;
         m->fr->qSize ++;
+
+        time(&segundos);   
+        currentTime = localtime(&segundos);
+        printf("Time: %d:%d:%d - Despachante ́e avisado pelo Pager que a pagina %d do processo %d esta no quadro %d.\n"
+        , currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, id, pid, fr);
 
     }
     else                                                                // Queue is full.
@@ -61,18 +73,22 @@ int insertPage (page * p, memory * m)
             m->fr->last->next = NULL;                                        // Adjusts new last next pointer.
         }
         
-        m->fr->first->p->ref = false;
         m->fr->first->p->valid = false;                                   // Victm's page table adjustments.
         p->idf = m->fr->first->p->idf;                                    // New page table idf update.
         m->fr->first->p->idf = -1;
 
-        m->fr->first->p = p;                                             // Changes pagens on the first node.
+        m->fr->first->p = p;                                             // Changes page on the first node.
 
         m->fr->last->next = m->fr->first;                                    // put the first node on last position.
         m->fr->last = m->fr->first;
 
         m->fr->first = m->fr->first->next;                                   // Adjusts the new first node.
         m->fr->last->next = NULL;                                        // Adjusts new last next pointer.
+
+         time(&segundos);   
+        currentTime = localtime(&segundos);
+        printf("Time: %d:%d:%d - Despachante ́e avisado pelo Pager que a pagina %d do processo %d esta no quadro %d.\n"
+        , currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, id, pid, p->idf);
     }
 
     return 0; 
@@ -95,7 +111,7 @@ void * pager (void * param)
         pgr->p->pgTb[pgr->pgIndx]->idf = fr;
     }
 
-    insertPage(pgr->p->pgTb[pgr->pgIndx], pgr->m);
+    insertPage(pgr->p->pgTb[pgr->pgIndx], pgr->m, pgr->pgIndx, pgr->p->id);
 
     pthread_mutex_unlock(&pgr->m->lock);
     pthread_mutex_unlock(&pgr->d->lock);

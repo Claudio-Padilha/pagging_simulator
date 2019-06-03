@@ -26,5 +26,5 @@ void * pager (void * param);
 int hasFreeFrame (memory * m);
 
 // Inserts a page using second chance algorithm.
-int insertPage (page * p, memory * m);
+int insertPage (page * p, memory * m, int id, int pid);
 #endif
