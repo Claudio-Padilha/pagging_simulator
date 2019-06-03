@@ -85,12 +85,12 @@ void * pager (void * param)
     pthread_mutex_lock(&pgr->m->lock);
     pthread_mutex_lock(&pgr->d->lock);                              // Simbolic of getting page from disc
     pthread_mutex_lock(&pgr->p->lock);
-
     int fr = hasFreeFrame(pgr->m);
 
     if (fr >= 0)                                                   // Has a free frame
     {                                    
         // Allocated frame and updated pgTable (idf).
+
         pgr->m->fr->ff[fr] = 0;                                    
         pgr->p->pgTb[pgr->pgIndx]->idf = fr;
     }

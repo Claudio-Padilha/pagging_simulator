@@ -3,6 +3,7 @@
 
 #include <pthread.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "../../data_structure/queue/queue.h"
 #include "../../hardware/disc/disc.h"
 #include "../../hardware/memory/memory.h"

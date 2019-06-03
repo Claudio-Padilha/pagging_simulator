@@ -53,7 +53,7 @@ void * shipper (void * param)
     {
         pthread_mutex_lock(&sh->m->lock);
         sh->m->pgFaults ++;                                                         // Update total pg faults
-        pthread_mutex_lock(&sh->m->lock);
+        pthread_mutex_unlock(&sh->m->lock);
 
         time(&segundos);   
         currentTime = localtime(&segundos);
@@ -64,11 +64,6 @@ void * shipper (void * param)
         pthread_t pgr;
         pthread_create(&pgr, NULL, pager, (void *) pgAr);                           // Calls pager to bring the missing page to memory.
         pthread_join(pgr, NULL);                                                    // wait for pager to bring missing page to memory.
-
-        time(&segundos);   
-        currentTime = localtime(&segundos);
-        printf("Time: %d:%d:%d - Despachante percebe que a pagina %d do processo %d nao esta na memoria e solicita que o Pager traga %d a memoria.\n"
-        , currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, pgIndex, sh->p->id, pgIndex);
 
         pthread_mutex_lock(&sh->p->lock);
 

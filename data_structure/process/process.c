@@ -13,6 +13,9 @@ process * newProcess(int pid, int numPgs, int creation, int burst, disc * d)
     for (int i = 0; i<numPgs; i++)
     {
         ret->pgTb[i] = (page *) malloc(sizeof(page));
+        ret->pgTb[i]->idf = -1;
+        ret->pgTb[i]->ref = false;
+        ret->pgTb[i]->ref = false;
     }
 
     for (int i = 0; i < numPgs; i++)                                                // Creates page table.

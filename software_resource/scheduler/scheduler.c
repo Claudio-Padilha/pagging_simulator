@@ -118,14 +118,14 @@ void * roundRobin (void * param)
                 pthread_t sh;
                 shArgs * shAr = newShArgs(p, sch->d, sch->m, sch->t, sch->seed, sch->t->tq);
 
-                pthread_create (&sh, NULL, shipper, (void *) shAr);                                             // Sends process to shipper.
-
                 struct tm * currentTime;
                 time_t segundos;
                 time(&segundos);   
                 currentTime = localtime(&segundos);
                 printf("Time: %d:%d:%d - Escalonador Round-Robin de CPU escolheu o processo %d, retirou-o da fila de prontos e o encaminhou ao Despachante.\n"
                 , currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, p->id);
+
+                 pthread_create (&sh, NULL, shipper, (void *) shAr);                                             // Sends process to shipper.
 
                 break;
             }
