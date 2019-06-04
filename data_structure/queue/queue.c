@@ -17,3 +17,22 @@ node * newNode (process * p)
     ret->p = p;
     return ret;
 }
+
+void printPgTable (queue * ready)
+{
+    node * aux = ready->first;
+
+    while (aux != NULL)
+    {
+        if (aux->p->burst > 0)
+        {
+            for (int i = 0; i < aux->p->numPgs; i++)
+            {
+                printf("    PROCESS: %d PGID: %d, FRAME: %d, REF: %d, VALID: %d\n", aux->p->id, aux->p->pgTb[i]->id, aux->p->pgTb[i]->idf, aux->p->pgTb[i]->ref, aux->p->pgTb[i]->valid);
+            }
+            printf("\n");
+        }
+
+        aux = aux->next;
+    }
+}

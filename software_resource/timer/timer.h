@@ -7,6 +7,8 @@
 #include <unistd.h>
 #include <stdio.h>
 #include "../../data_structure/process/process.h"
+#include "../../data_structure/queue/queue.h"
+#include "../../hardware/memory/memory.h"
 
 typedef struct timerS
 {
@@ -23,6 +25,8 @@ typedef struct timerArgs
 {
     timerS * t;
     process * p;
+    queue * ready;
+    memory * m;
 
     int usage;                                               // Amount of cpu used (time).
 }timerArgs;
@@ -31,7 +35,9 @@ typedef struct timerArgs
 timerS * newTimer (int tq, int totalProc);
 
 // Creates new timer args.
-timerArgs * newTimerArgs (timerS * t, process * p, int usage);
+timerArgs * newTimerArgs (timerS * t, process * p, int usage, queue * ready, memory * m);
+
+int insertIntoQueueT (process * p, queue * ready);
 
 // New timer thread.
 void * timer (void * param);

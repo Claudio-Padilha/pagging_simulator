@@ -78,34 +78,42 @@ void * roundRobin (void * param)
                         nodeFr * prev  = (nodeFr *) NULL;
                         if (p->pgTb[i]->valid == true)                         // Process page is in memory.
                         {
-                            sch->m->fr->ff[p->pgTb[i]->idf] = 1;            // Marks frame idf as free.
                             p->pgTb[i]->valid = false;
                             p->pgTb[i]->ref = false;
 
                             aux = sch->m->fr->first;
                             prev = NULL;
-                            while (aux != NULL && aux->p->idf != p->pgTb[i]->idf)           //Looks for page on free frame structure queue and removes it.
+                            while (aux != NULL && aux->p->idf != p->pgTb[i]->idf)           //Looks for the page on free frame structure queue and removes it.
                             {
                                 prev = aux;
                                 aux = aux->next;
                             }
 
-                            if (prev != NULL)
+                            sch->m->fr->ff[p->pgTb[i]->idf] = 1;                   // Marks frame idf as free.
+
+                            if (prev == NULL)                                   // First node will be removed
                             {
-                                prev->next = aux->next;
-                            }else
+                                if (aux == sch->m->fr->last)                        // Only one element on queue
+                                {
+                                    sch->m->fr->last = NULL;
+                                }
+
+                                sch->m->fr->first = aux->next;     
+                            }
+                            else
                             {
-                                sch->m->fr->first = NULL;                                           //only element on queue
-                                sch->m->fr->last = NULL;
+                                if (aux->next == NULL)                              // It removes the last element
+                                {
+                                    sch->m->fr->last = prev;
+                                    sch->m->fr->last->next = NULL;
+                                }
+                                else                                                 // Midle element will be removed
+                                {
+                                    prev->next = aux->next;
+                                }
                             }
                             
                             aux->p->idf = -1;
-
-                            if (aux->next == NULL)                                                  // It was the last on queue
-                            {
-                                sch->m->fr->last = prev;
-                            }
-
                             sch->m->fr->qSize --;
                         }
                     }
@@ -124,12 +132,10 @@ void * roundRobin (void * param)
                     continue;
                 }
 
-                insertIntoQueue(p, sch->ready);
-
                 pthread_mutex_unlock(&sch->ready->lock);
 
                 pthread_t sh;
-                shArgs * shAr = newShArgs(p, sch->d, sch->m, sch->t, sch->seed, sch->t->tq);
+                shArgs * shAr = newShArgs(p, sch->d, sch->m, sch->t, sch->seed, sch->t->tq, sch->ready);
 
                 struct tm * currentTime;
                 time_t segundos;

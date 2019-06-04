@@ -17,13 +17,14 @@ typedef struct shArgs
     int tq;
 
     process * p;
+    queue * ready;
     timerS * t;
     disc * d;
     memory * m;
 }shArgs;
 
 // Creates new shipper args.
-shArgs * newShArgs (process * p, disc * d, memory *m, timerS * t, int seed, int tq);
+shArgs * newShArgs (process * p, disc * d, memory *m, timerS * t, int seed, int tq, queue * ready);
 
 // Creates a new shipper.
 void * shipper (void * param);

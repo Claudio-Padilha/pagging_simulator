@@ -80,6 +80,11 @@ int main ()
     pthread_cond_wait(&t->endCond, &t->lock);                           // Waits for timer signal to end the execution
     pthread_mutex_unlock(&t->lock);
 
+
+    time(&segundos);   
+    currentTime = localtime(&segundos);
+    printf("Time: %d:%d:%d - O numero de falha de paginas foi %d.\n", currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, m->pgFaults);
+
     time(&segundos);   
     currentTime = localtime(&segundos);
     printf("Time: %d:%d:%d - Termino da observacao.\n", currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec);

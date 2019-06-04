@@ -14,10 +14,11 @@ typedef struct pgArgs
     process * p;
     disc * d;
     memory * m;
+    queue * ready;
 }pgArgs;
 
 // Creates new pager args
-pgArgs * newPgArgs (process * p, disc * d, memory * m, int pgIndx);
+pgArgs * newPgArgs (process * p, disc * d, memory * m, int pgIndx, queue * ready);
 
 // Creates new pager
 void * pager (void * param);
@@ -26,5 +27,5 @@ void * pager (void * param);
 int hasFreeFrame (memory * m);
 
 // Inserts a page using second chance algorithm.
-int insertPage (page * p, memory * m, int id, int pid);
+int insertPage (page * p, memory * m, int id, int pid, queue * ready);
 #endif

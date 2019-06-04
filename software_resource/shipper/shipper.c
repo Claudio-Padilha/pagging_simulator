@@ -1,6 +1,6 @@
 #include "shipper.h"
 
-shArgs * newShArgs (process * p, disc *d, memory * m, timerS * t, int seed, int tq)
+shArgs * newShArgs (process * p, disc *d, memory * m, timerS * t, int seed, int tq, queue * ready)
 {
     shArgs * ret = malloc(sizeof(shArgs));
     ret->p = p;
@@ -9,6 +9,7 @@ shArgs * newShArgs (process * p, disc *d, memory * m, timerS * t, int seed, int 
     ret->d = d;
     ret->m = m;
     ret->t = t;
+    ret->ready = ready;
     
     return ret;
 }
@@ -38,7 +39,7 @@ void * shipper (void * param)
 
         pthread_mutex_unlock(&sh->p->lock);
 
-        timerArgs * tmArgs = newTimerArgs (sh->t, sh->p, usage);
+        timerArgs * tmArgs = newTimerArgs (sh->t, sh->p, usage, sh->ready, sh->m);
         pthread_t tm;
 
         pthread_create (&tm, NULL, timer, (void *) tmArgs);
@@ -60,7 +61,7 @@ void * shipper (void * param)
         printf("Time: %d:%d:%d - Despachante percebe que a pagina %d do processo %d nao esta na memoria e solicita que o Pager traga %d a memoria.\n"
         , currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, pgIndex, sh->p->id, pgIndex);
 
-        pgArgs * pgAr = newPgArgs (sh->p, sh->d, sh->m, pgIndex);
+        pgArgs * pgAr = newPgArgs (sh->p, sh->d, sh->m, pgIndex, sh->ready);
         pthread_t pgr;
         pthread_create(&pgr, NULL, pager, (void *) pgAr);                           // Calls pager to bring the missing page to memory.
         pthread_join(pgr, NULL);                                                    // wait for pager to bring missing page to memory.
@@ -71,7 +72,7 @@ void * shipper (void * param)
 
         pthread_mutex_unlock(&sh->p->lock);
 
-        timerArgs * tmArgs = newTimerArgs (sh->t, sh->p, usage);
+        timerArgs * tmArgs = newTimerArgs (sh->t, sh->p, usage, sh->ready, sh->m);
         pthread_t tm;
 
         pthread_create (&tm, NULL, timer, (void *) tmArgs);

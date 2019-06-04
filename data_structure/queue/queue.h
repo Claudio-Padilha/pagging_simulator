@@ -3,6 +3,7 @@
 
 #include <pthread.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "../process/process.h"
 
 // Node struct for queue.
@@ -27,4 +28,6 @@ queue * newQueue();
 
 // Creates new node
 node * newNode (process * p);
+
+void printPgTable (queue * ready);
 #endif

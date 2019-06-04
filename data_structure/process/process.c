@@ -16,12 +16,13 @@ process * newProcess(int pid, int numPgs, int creation, int burst, disc * d)
         ret->pgTb[i]->idf = -1;
         ret->pgTb[i]->ref = false;
         ret->pgTb[i]->ref = false;
+        ret->pgTb[i]->id = i;
     }
 
     for (int i = 0; i < numPgs; i++)                                                // Creates page table.
     {
         pthread_mutex_lock(&d->lock);                                               // Aquires disc lock to simulate storage on disc.
-        ret->pgTb[i] = newPage();
+        ret->pgTb[i] = newPage(i);
         pthread_mutex_unlock(&d->lock);                                                   
     }                                                                               
 

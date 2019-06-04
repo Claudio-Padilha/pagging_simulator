@@ -11,3 +11,18 @@ memory * newMemmory (int size)
 
     return ret;
 }
+
+void printFreeFrame (memory * m)
+{
+    printf("    FREE FRAME: ");
+    for (int i = 0; i < m->fr->ffSize; i++)
+    {
+        if (i < m->fr->ffSize - 1)
+        {
+            printf("%d ", m->fr->ff[i]);
+        }else
+        {
+             printf("%d\n", m->fr->ff[i]);
+        }
+    }
+}
